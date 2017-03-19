@@ -3,15 +3,95 @@
 <script
   src="https://code.jquery.com/jquery-3.2.0.min.js"
   integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
+  crossorigin="anonymous">
+ </script>
+
+ <script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
   crossorigin="anonymous"></script>
+
+ <style>
+ #game {
+ 	height: 100%;
+ 	background-size: 100%;
+ }
+
+ .row {
+ 	width:100%;
+ 	height:12.5%;
+ 	display: inline-block;
+ 	box-sizing: border-box;
+ 	border-bottom: 1px solid green;
+ }
+
+ .cell {
+ 	width:16.66%;
+ 	height:100%;
+ 	display: inline-block;
+ 	box-sizing: border-box;
+ 	border-left: 2px solid blue;
+ 	float: left;
+ }
+
+ .hero {
+ 	width: 100%;
+ 	height: 100%;
+ 	background-size: 100%;
+ }
+
+
+
+ </style>
 </head>
 
 <body>
-<h1> this is an index </h1>
+<div id='game'>
+
+</div>
 </body>
 
 <script>
-$('h1').css('color', 'red')
+h=$('#game').height();
+$('#game').width(h*0.75)
+$('#game').css('background-image', 'url("maps/arena_lava.png")');
+
+row=$('<div class="row">');
+cell=$('<div class="cell">');
+for(i=0; i<8; i++) {
+	g=$('#game')
+	r=row.clone();
+	r.appendTo(g);
+	for(j=0; j<6; j++) {
+		c=cell.clone();
+		c.attr('id', 'cell-'+i+'-'+j)
+		c.appendTo(r);
+	};
+};
+
+$('.cell').droppable({
+        drop:function(event, ui) {
+            ui.draggable.detach().appendTo($(this));
+        }
+});
+
+var cell_width=$('#cell-0-0').width()
+var cell_height=$('#cell-0-0').height()
+
+ryoma=$('<div class="hero">')
+ryoma.appendTo($('#cell-2-3'))
+ryoma.css('background-image', 'url("heroes/ryoma.png")')
+ryoma.width(cell_width);
+ryoma.height(cell_height);
+
+
+ryoma.draggable({
+	containment: '#game',
+	grid: [cell_width, cell_height],
+	opacity: 0.75,
+	helper: 'clone'
+});
+
 </script>
 
 </html>
